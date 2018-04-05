@@ -176,6 +176,9 @@ if(!login_check()){
 					case 'form-rekap-asuransi':
                         include "pages/pusat/report/asuransi/form-rekap-asuransi.php";
                         break;
+                    case 'form-detailSla':
+                        include "pages/pusat/dashboard/form-detail-sla.php";
+                        break;
                     default :
                         include "pages/pusat/dashboard/form-dashboard.php";
                 }

@@ -823,13 +823,6 @@ if (isset($_GET['id_crm']) && isset($_SESSION['nik'])) {
                                         <td><?= $rowSign[4] ?></td>
                                         <td><?= $rowSign[5] ?></td>
                                         <td><?= $rowSign[6] ?></td>
-                                        <!--<td align="center">
-                                            <a href="pages/legal/sign-in/form-updatesign.php?&idSign=<?/*= $rowSign[0] */?>"
-                                               data-toggle="modal" data-target="#modalUpdateSign"
-                                               title="Update">
-                                                <i class="fa  fa-unlock"></i>
-                                            </a>
-                                        </td>-->
                                     </tr>
                                     <?php
 
@@ -865,11 +858,9 @@ if (isset($_GET['id_crm']) && isset($_SESSION['nik'])) {
                                 </thead>
                                 <tbody>
                                 <?php
-                                $sqlPencairan = mysqli_query($Open, "SELECT 
-                                                                                            a.id_pencairan
-                                                                                            ,tgl_pencairan
-                                                                                        FROM tb_inputpencairan a 
-                                                                                        WHERE a.id_crm = '" . $idCrm . "'");
+                                $sqlPencairan = mysqli_query($Open, "SELECT a.id_pencairan,tgl_pencairan
+                                                                            FROM tb_inputpencairan a 
+                                                                            WHERE a.id_crm = '" . $idCrm . "'");
 
                                 $no = 0;
                                 while ($rowPencairan = mysqli_fetch_array($sqlPencairan)) {
@@ -1060,7 +1051,14 @@ if (isset($_GET['id_crm']) && isset($_SESSION['nik'])) {
                         alert("Data Berhasil Disimpan.");
                         history.back();
                     } else if (msg == 'sql') {
-                       alert("Data Query Gagal Disimpan.");
+                        alert("Data Query Gagal Disimpan.");
+                    }else if(msg == 'reject'){
+                        alert("Data Berhasil di Reject");
+                        history.back();
+                    }else if(msg == 'can-not'){
+                        alert("Data Tidak bisa di rubah");
+                    }else if(msg == 'can not restatus'){
+                        alert("Data Melebihi 90 Hari");
                     } else {
                         alert("Data Error");
                     }

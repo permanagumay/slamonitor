@@ -57,6 +57,13 @@ if(isset($_POST['nomor_cif']) && isset($_SESSION['nik'])){
                                                                           ,'')");
 
                         if($sql){
+                            // get data id_crm
+                            $sqlToSla = mysqli_query($Open, "select id_crm from tb_inputcrm where cif = '$CIF' and ppk = '$PPK' and crm = '$CRM'");
+                            $resultToSla = mysqli_fetch_array($sqlToSla);
+
+                            // then save id_crm to tb_detsla
+                            $sqlSaveToSla = mysqli_query($Open, "insert into tb_detsla VALUES ('', '".$resultToSla[0]."', '".$statusAplikasi."', '".$nik."', '".$create_at."', '')");
+
                             $status = 'ok';
                         }else {
                             $status = 'sql';
@@ -85,11 +92,17 @@ if(isset($_POST['nomor_cif']) && isset($_SESSION['nik'])){
                                                                           ,'')");
 
         if($sql){
+            // get data id_crm
+            $sqlToSla = mysqli_query($Open, "select id_crm from tb_inputcrm where cif = '$CIF' and ppk = '$PPK' and crm = '$CRM'");
+            $resultToSla = mysqli_fetch_array($sqlToSla);
+
+            // then save id_crm to tb_detsla
+            $sqlSaveToSla = mysqli_query($Open, "insert into tb_detsla VALUES ('', '".$resultToSla['id_crm']."', '".$statusAplikasi."', '".$nik."', '".$create_at."', '')");
+
             $status = 'ok';
         }else {
             $status = 'sql';
         }
-        $status = 'ok';
     }
     echo $status;die;
 }else {

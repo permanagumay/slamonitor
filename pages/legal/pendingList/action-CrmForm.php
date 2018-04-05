@@ -62,24 +62,33 @@ if (isset($_POST['id_crm']) && isset($_SESSION['nik'])) {
     $nik = $_SESSION['nik'];
     $update_at = date("Y-m-d H:i:s");
 
-    $sql = mysqli_query($Open, "update tb_inputcrm set status = '$statusProgress', update_at = '$update_at' where id_crm = '$idCrm'");
-    if($sql){
-        $status = 'ok';
-        // insert to HistInputCrm
-        $sqlHist = mysqli_query($Open, "insert into histinputcrm VALUES (''
-                                                                                ,'".$idCrm."'
-                                                                                ,''
-                                                                                ,''
-                                                                                ,''
-                                                                                ,''
-                                                                                ,''
-                                                                                ,''
-                                                                                ,'".$nik."'
-                                                                                , '".$statusProgress."'
-                                                                                ,''
-                                                                                ,'".$update_at."'
-                                                                                ,'' )");
+    /*whole data save to histinputcrm*/
+    $sqlGet = mysqli_query($Open, "select * from tb_inputcrm where id_crm = '$idCrm'");
+    $resultGet = mysqli_fetch_array($sqlGet);
+    $sqlHist = mysqli_query($Open, "insert into histinputcrm VALUES (''
+                                                                          ,'$resultGet[0]'
+                                                                          ,'$resultGet[1]'
+                                                                          ,'$resultGet[2]'
+                                                                          ,'$resultGet[3]'
+                                                                          ,'$resultGet[4]'
+                                                                          ,'$resultGet[5]'
+                                                                          ,'$resultGet[6]'
+                                                                          ,'$resultGet[7]'
+                                                                          ,'$resultGet[8]'
+                                                                          ,'$resultGet[9]'
+                                                                          ,'$resultGet[10]'
+                                                                          ,'$resultGet[11]'
+                                                                          ,'$update_at'
+                                                                          )");
+    // update  data tb_detsla
+   $sqlUpdateDetSla = mysqli_query($Open, "update tb_detsla set out_date = '$update_at' where id_crm = '".$idCrm."' and in_date = '".$resultGet[11]."'");
 
+   // kemudian create data detsla baru dengan out date sebelumnya menjadi in date dalam data yang baru
+    $sqlNewDetSla = mysqli_query($Open, "insert into tb_detsla VALUES ('', '$idCrm', '$statusProgress', '$nik', '$update_at', '')");
+
+    if($sqlHist){
+        $status = 'ok';
+        $sql = mysqli_query($Open, "update tb_inputcrm set status = '$statusProgress', nik_user = '$nik' , update_at = '$update_at' where id_crm = '$idCrm'");
     }else {
         $status = 'sql';
     }

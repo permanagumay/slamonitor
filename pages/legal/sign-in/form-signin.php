@@ -21,7 +21,7 @@ if(isset($_GET['idCrm']) && isset($_SESSION['nik'])){
                         </div>
                         <input type="hidden" name="idCrm" value="<?=$idCrm?>">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label class="col-sm-2 control-label" style="text-align: left">Tgl. Pengurusan</label>
                         <div class="col-sm-4">
                             <div class="input-group input-append date" id="datePickerPengurusan">
@@ -42,16 +42,6 @@ if(isset($_GET['idCrm']) && isset($_SESSION['nik'])){
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" style="text-align: left">Tgl. Pemenuhan</label>
-                        <div class="col-sm-4">
-                            <div class="input-group input-append date" id="datePickerPemenuhan">
-                                <input class="form-control" name="tglPemenuhan" id="tglPemenuhan" placeholder="yyyy/mm/dd" />
-                                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
-                            <p class="tglPemenuhanMsg"></p>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-sm-2 control-label" style="text-align: left">Tgl. Masuk Khasanah</label>
                         <div class="col-sm-4">
                             <div class="input-group input-append date" id="datePickerKhasanah">
@@ -64,15 +54,25 @@ if(isset($_GET['idCrm']) && isset($_SESSION['nik'])){
                     <div class="form-group">
                         <label class="col-sm-2 control-label" style="text-align: left">Status Sign-in</label>
                         <div class="col-sm-4">
-                            <select class="form-control" id="status-progress" name="status-progress">
+                            <select class="form-control" id="status-progress" name="status-progress" onchange="showTglUrus()">
                                 <?=getStatusProgress(); ?>
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divTglPemenuhan">
+                        <label class="col-sm-2 control-label" style="text-align: left">Tgl. Pemenuhan</label>
+                        <div class="col-sm-4">
+                            <div class="input-group input-append date" id="datePickerPemenuhan">
+                                <input class="form-control" name="tglPemenuhan" id="tglPemenuhan" placeholder="yyyy/mm/dd" />
+                                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            <p class="tglPemenuhanMsg"></p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label" style="text-align: left">Keterangan</label>
                         <div class="col-sm-4">
-                            <textarea class="form-control" id="keterangan-sign" name="keterangan-sign"></textarea>
+                            <textarea class="form-control" id="keterangan-sign" name="keterangan-sign" placeholder="keterangan sign pk"></textarea>
                             <p class="ketSign"></p>
                         </div>
                     </div>
@@ -93,27 +93,27 @@ if(isset($_GET['idCrm']) && isset($_SESSION['nik'])){
                 autoclose: true,
                 format: 'yyyy/mm/dd'
             });
-        });
-        $(document).ready(function () {
             $('#datePickerTarget').datepicker({
                 autoclose: true,
                 format: 'yyyy/mm/dd'
             });
-        });
-        $(document).ready(function () {
             $('#datePickerPemenuhan').datepicker({
                 autoclose: true,
                 format: 'yyyy/mm/dd'
             });
-        });
-        $(document).ready(function () {
             $('#datePickerKhasanah').datepicker({
                 autoclose: true,
                 format: 'yyyy/mm/dd'
             });
         });
+        function showTglUrus() {
+            if($('#status-progress').val() == 1 ){
+                document.getElementById("divTglPemenuhan").style.display = '';
+            }else{
+                document.getElementById("divTglPemenuhan").style.display = 'none';
+            }
 
-
+        }
         function sentSignIn() {
             if($('#status-progress').val() == 1 ){
                 if($('#no_pk').val().trim() == ''){
@@ -136,18 +136,18 @@ if(isset($_GET['idCrm']) && isset($_SESSION['nik'])){
                     $('.tglTargetMsg').html('<span style="color:red;"></span>');
                 }
 
-                if($('#tglPemenuhan').val().trim() == ''){
-                    $('.tglPemenuhanMsg').html('<span style="color:red;">Tgl. Pemenuhan Wajib Diisi.</span>');
-                    return false;
-                } else {
-                    $('.tglPemenuhanMsg').html('<span style="color:red;"></span>');
-                }
-
                 if($('#tglKhasanah').val().trim() == ''){
                     $('.tglKhasanahMsg').html('<span style="color:red;">Tgl. Khasanah Wajib Diisi.</span>');
                     return false;
                 } else {
                     $('.tglKhasanahMsg').html('<span style="color:red;"></span>');
+                }
+
+                if($('#tglPemenuhan').val().trim() == ''){
+                    $('.tglPemenuhanMsg').html('<span style="color:red;">Tgl. Pemenuhan Wajib Diisi.</span>');
+                    return false;
+                } else {
+                    $('.tglPemenuhanMsg').html('<span style="color:red;"></span>');
                 }
 
                 if($('#keterangan-sign').val().trim() == ''){
@@ -156,9 +156,6 @@ if(isset($_GET['idCrm']) && isset($_SESSION['nik'])){
                 } else {
                     $('.ketSign').html('<span style="color:red;"></span>');
                 }
-
-
-
             }else {
                 if($('#no_pk').val().trim() == ''){
                     $('.noPKMsg').html('<span style="color:red;">No. PK  Wajib Diisi.</span>');
@@ -195,8 +192,6 @@ if(isset($_GET['idCrm']) && isset($_SESSION['nik'])){
                 }
 
             }
-
-
             $.ajax({
                 url:"pages/legal/sign-in/action-signin.php",
                 method:"POST",

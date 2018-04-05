@@ -65,7 +65,7 @@ if(isset($_SESSION['nik']) && isset($_SESSION['id_cabang'])){
                                     <td style="text-align: center"><?=$row[8]?></td>
 
                                     <?php
-                                        if($row[7] == 7){ // jika status aplikasi approved
+                                        if($row[7] == 7 || $row[7] == 1){ // jika status aplikasi approved
                                     ?>
                                             <td align="center">
                                                 <a href="home-legal.php?page=form-signin&idCrm=<?=$row[0];?>" title="Sign-in">
@@ -73,7 +73,7 @@ if(isset($_SESSION['nik']) && isset($_SESSION['id_cabang'])){
                                                 </a>
                                             </td>
                                             <?php
-                                                if($row[10] == 1){ // jika status sign-in done
+                                                if($row[10] == 'Done'){ // jika status sign-in done
                                             ?>
                                                     <td align="center">
                                                         <a href="home-legal.php?page=form-detail-dashboard&idCrm=<?=$row[0];?>" title="Detail">
